@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="contact.css">
+  <title>Document</title>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="book.html">Book</a></li>
+      <li><a href="bookings.html">Bookings</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1> Contact - Jenny's Cafe</h1>
+    <p>Best coffee in the world</p>
+  </header>
+
+  <main>
+    <form class="contact-form" id="contactForm" onsubmit="return submitMessage(event)">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" required>
+
+      <label for="fullName">Full name</label>
+      <input type="text" name="fullName" id="fullName" >
+
+      <label for="phone">Phone</label>
+      <input type="tel" name="phone" id="phone">
+
+      <select name="feedbackType" id="feedbackType">
+        <option value="review">Review</option>
+        <option value="complaint">Complaint</option>
+        <option value="event">Book Event</option>
+      </select>
+
+      <textarea name="comment" id="comment" rows="3" cols="30" placeholder="leave your comment here" required></textarea>
+      
+      <button type="button" onclick="clearFormInputs()" >Clear </button>
+      <input type="Submit" value="Submit">
+
+    </form>
+  </main>
+
+  <footer>
+    <div class="form-title-section">
+      <h3>Contact Message</h3>
+      <button onclick="deleteMessages()">Clear messages</button>
+    </div>
+
+
+    <div class="form-wrapper">
+      <dl id="currentMessages">
+
+      </dl>
+    </div>
+  
+
+  </footer>
+
+  <script>
+    function deleteMessages(){
+      if(window.sessionStorage.getItem('messages')){
+        window.sessionStorage.removeItem('messages')
+      }
+      renderMessages()
+    }
+
+  
+
+    function submitMessage(event){
+      event.preventDefault()
+      const email =document.getElementById('email').value
+      const fullName =document.getElementById('fullName').value
+      const phone =document.getElementById('phone').value
+      const feedbackType =document.getElementById('feedbackType').value
+      const comment =document.getElementById('comment').value
+
+      const messageObject={
+        email,fullName,phone,feedbackType,comment 
+      }
+      
+      let currentMessages=[]
+
+      if(window.sessionStorage.getItem('messages')){
+        currentMessages=
+        JSON.parse(
+          window.sessionStorage.getItem('messages')
+        )
+      }
+
+      currentMessages.push(messageObject)
+      console.log(currentMessages);
+
+      window.sessionStorage.setItem(
+        'messages',
+        JSON.stringify(currentMessages)
+      )
+
+      renderMessages()
+    }
+
+    function clearFormInputs(){
+      document.getElementById('contactForm').reset()
+    }
+
+    function renderMessages(){
+
+      let currentMessages=[]
+
+      if(window.sessionStorage.getItem('messages')){
+        currentMessages=
+        JSON.parse(
+          window.sessionStorage.getItem('messages')
+        )
+      }
+
+      let listItems=[]
+      for(let i=0; i<currentMessages.length;i++){
+        let listItem = '';
+        const currentMessage=currentMessages[i]
+        listItem +=`<dt>${currentMessage.fullName} - ${currentMessage.email} -  ${currentMessage.phone}</dt>`
+        listItem+=`<dd>${currentMessage.feedbackType} - ${currentMessage.comment}</dd>`
+        listItem +=`<br>`
+        listItems.push(listItem)
+      }
+
+      let descList=document.getElementById('currentMessages')
+      descList.innerHTML=listItems.join('')
+
+      
+    }
+
+ 
+    renderMessages()
+
+  </script>
+</body>
+</html>
