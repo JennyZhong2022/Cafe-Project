@@ -4,16 +4,16 @@ main{
 }
 
 main > .gallery{
-  margin-top: 20px;
+  margin-top: 40px;
   display: grid;
   /* grid-template-columns: 1fr 1fr 1fr; */
   grid-template-columns: repeat(3,1fr);
-  gap: 10px;
+  gap: 38px;
 }
 
 main > .gallery > img{
-  height: 100px;
-  width: 100px;
+  height: 200px;
+  width: 200px;
   padding: 10px;
   border: 1px solid white;
   border-radius: 5px;
